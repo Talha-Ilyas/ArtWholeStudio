@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Portfolio & Art Shop</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .modal-active {
+            overflow: hidden;
+        }
+
+        /* Cart Sidebar Transition */
+        #cartSidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .cart-open {
+            transform: translateX(0%);
+        }
+
+        .cart-closed {
+            transform: translateX(100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans relative">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full z-40 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#home" class="text-2xl font-bold text-gray-900 tracking-widest">ARTWHOLE<span
+                            class="text-indigo-600">STUDIO</span></a>
+                </div>
+
+                <div class="flex items-center space-x-6">
+                    <div class="hidden md:flex space-x-8 mr-4">
+                        <a href="#home" class="text-gray-600 hover:text-indigo-600 font-medium">Home</a>
+                        <a href="#shop" class="text-gray-600 hover:text-indigo-600 font-medium">Gallery</a>
+                        <a href="#about" class="text-gray-600 hover:text-indigo-600 font-medium">About</a>
+                        <a href="#contact" class="text-gray-600 hover:text-indigo-600 font-medium">Contact</a>
+                    </div>
+
+                    <!-- Cart Icon with Badge -->
+                    <button onclick="toggleCart()" class="relative text-gray-800 hover:text-indigo-600 p-2">
+                        <i class="fas fa-shopping-cart text-2xl"></i>
+                        <span id="cartCount"
+                            class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. HOMEPAGE SECTION -->
+    <section id="home" class="pt-24 pb-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4">Welcome to My Art Studio</h1>
+            <p class="text-lg text-gray-500 mb-8">Discover unique paintings that speak to the soul.</p>
+
+            <div class="bg-indigo-50 p-6 rounded-lg max-w-3xl mx-auto mb-12">
+                <h3 class="text-xl font-semibold mb-2">Hello, I'm the Artist!</h3>
+                <p class="text-gray-600">I specialize in capturing emotions through vibrant colors and textures. Welcome
+                    to my creative world.</p>
+            </div>
+
+            <h2 class="text-3xl font-bold mb-6">Featured & Best Sellers</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Item 1 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden group cursor-pointer"
+                    onclick="openProductModal('Midnight Ocean', 'Oil on Canvas', '24x36 inches', '$450', 'Available', 'Free Worldwide Shipping', 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60')">
+                    <!-- <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" class="w-full h-64 object-cover group-hover:scale-105 transition duration-300"> -->
+                    <img src="/images/img-1.jpeg"
+                        class="w-full h-64 object-cover group-hover:scale-105 transition duration-300">
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg">Midnight Ocean</h3>
+                        <p class="text-indigo-600 font-semibold">Rs. 999</p>
+                        <span
+                            class="inline-block bg-yellow-200 text-yellow-800 text-xs px-2 py-1 rounded-full mt-2">Best
+                            Seller</span>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden group cursor-pointer"
+                    onclick="openProductModal('Golden Fields', 'Watercolor', '18x24 inches', '$300', 'Available', 'Standard Shipping', 'https://images.unsplash.com/photo-1580136608260-4eb11f4b24fe?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60')">
+                    <img src="/images/img-2.jpeg"
+                        class="w-full h-64 object-cover group-hover:scale-105 transition duration-300">
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg">Golden Fields</h3>
+                        <p class="text-indigo-600 font-semibold">Rs. 999</p>
+                        <span
+                            class="inline-block bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded-full mt-2">Featured</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SHOP / GALLERY SECTION -->
+    <section id="shop" class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-8">Gallery</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Gallery Item 1 -->
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100 cursor-pointer"
+                    onclick="openProductModal('Abstract Thoughts', 'Acrylic', '30x30 inches', '$500', 'In Stock', 'Free Shipping', 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60')">
+                    <img src="/images/img-3.jpeg"
+                        class="w-full h-48 object-cover">
+                    <div class="p-4 text-center">
+                        <h4 class="font-bold">Abstract Thoughts</h4>
+                        <p class="text-gray-500 text-sm">Abstract</p>
+                        <p class="text-indigo-600 mt-2">Rs. 499</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. PRODUCT MODAL -->
+    <div id="productModal"
+        class="fixed inset-0 z-50 hidden bg-black bg-opacity-75 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-4xl w-full flex flex-col md:flex-row overflow-hidden relative">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-gray-500 hover:text-black z-10">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+
+            <div class="md:w-1/2">
+                <img id="modalImg" src="" alt="Artwork" class="w-full h-full object-cover min-h-[300px]">
+            </div>
+            <div class="md:w-1/2 p-8 flex flex-col justify-center">
+                <h2 id="modalTitle" class="text-3xl font-bold mb-2">Artwork Title</h2>
+                <p id="modalPrice" class="text-2xl text-indigo-600 font-semibold mb-6">$0.00</p>
+
+                <div class="space-y-3 mb-8">
+                    <p><span class="font-bold text-gray-700">Size:</span> <span id="modalSize"
+                            class="text-gray-600">...</span></p>
+                    <p><span class="font-bold text-gray-700">Medium:</span> <span id="modalMedium"
+                            class="text-gray-600">...</span></p>
+                    <p><span class="font-bold text-gray-700">Availability:</span> <span id="modalAvailability"
+                            class="text-green-600 font-semibold">...</span></p>
+                    <p><span class="font-bold text-gray-700">Shipping:</span> <span id="modalShipping"
+                            class="text-gray-600">...</span></p>
+                </div>
+
+                <!-- Add to Cart Button -->
+                <button onclick="addToCart()"
+                    class="bg-indigo-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition w-full font-bold shadow-lg flex justify-center items-center gap-2">
+                    <i class="fas fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. CART SIDEBAR -->
+    <!-- Cart Overlay -->
+    <div id="cartOverlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
+    <!-- Cart Drawer -->
+    <div id="cartSidebar"
+        class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 cart-closed flex flex-col">
+        <!-- Cart Header -->
+        <div class="flex justify-between items-center p-6 border-b">
+            <h2 class="text-2xl font-bold text-gray-900">Your Cart</h2>
+            <button onclick="toggleCart()" class="text-gray-500 hover:text-red-500">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-6 space-y-6">
+            <p id="emptyCartMsg" class="text-center text-gray-500 mt-10">Your cart is empty.</p>
+        </div>
+
+        <!-- Cart Footer / Checkout -->
+        <div class="p-6 border-t bg-gray-50">
+            <div class="flex justify-between text-xl font-bold mb-4">
+                <span>Total:</span>
+                <span id="cartTotal" class="text-indigo-600">$0.00</span>
+            </div>
+            <!-- Modified Proceed to Checkout Button -->
+            <button onclick="openCheckoutModal()"
+                class="w-full bg-gray-900 text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- 5. CHECKOUT MODAL (NEW) -->
+    <div id="checkoutModal"
+        class="fixed inset-0 z-50 hidden bg-black bg-opacity-75 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto relative p-6 md:p-8">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 z-10">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+
+            <h2 class="text-3xl font-bold mb-6 border-b pb-4">Checkout</h2>
+
+            <form id="checkoutForm" onsubmit="submitOrder(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Personal Info -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3 text-gray-700">Billing Details</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600">Full Name</label>
+                                <input type="text" required
+                                    class="w-full mt-1 p-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600">Email Address</label>
+                                <input type="email" required
+                                    class="w-full mt-1 p-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600">Phone Number</label>
+                                <input type="tel" required
+                                    class="w-full mt-1 p-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Address -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-3 text-gray-700">Shipping Address</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600">Street Address</label>
+                                <input type="text" required
+                                    class="w-full mt-1 p-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-600">City</label>
+                                    <input type="text" required placeholder="e.g. Lahore"
+                                        class="w-full mt-1 p-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-600">Zip Code</label>
+                                    <input type="text" required
+                                        class="w-full mt-1 p-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="mb-8 border-t pt-6">
+                    <h3 class="text-lg font-semibold mb-3 text-gray-700">Payment Method</h3>
+                    <select required class="w-full p-2 border rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="cod">Cash on Delivery (COD)</option>
+                        <option value="card">Credit / Debit Card</option>
+                        <option value="bank">Bank Transfer</option>
+                    </select>
+                </div>
+
+                <!-- Order Summary Final -->
+                <div class="bg-gray-50 p-4 rounded-lg mb-6 flex justify-between items-center border">
+                    <span class="font-semibold text-gray-700">Total to Pay:</span>
+                    <span id="checkoutTotal" class="text-2xl font-bold text-indigo-600">$0.00</span>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 transition shadow-lg">
+                    Place Order Now
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 6. ORDER SUCCESS MODAL (NEW) -->
+    <div id="successModal"
+        class="fixed inset-0 z-50 hidden bg-black bg-opacity-75 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-sm w-full p-8 text-center relative shadow-2xl">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check text-4xl text-green-500"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2 text-gray-800">Order Placed!</h2>
+            <p class="text-gray-600 mb-6">Thank you for your purchase. We will contact you shortly with shipping
+                details.</p>
+            <button onclick="closeSuccessModal()"
+                class="w-full bg-gray-900 text-white py-2 rounded-lg font-bold hover:bg-gray-800 transition">
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+
+    <!-- 7. ABOUT PAGE SECTION -->
+    <section id="about" class="py-16 bg-white border-t">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2">
+                    <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                        alt="Artist working" class="rounded-lg shadow-lg">
+                </div>
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold mb-6">About Me & My Art</h2>
+                    <div class="space-y-4 text-gray-600">
+                        <p><strong>Why I Paint:</strong> Painting is my language. It allows me to express emotions and
+                            stories that words simply cannot capture. Every stroke on the canvas is a piece of my soul.
+                        </p>
+                        <p><strong>My Inspiration:</strong> I draw inspiration from the raw beauty of nature, human
+                            emotions, and the unseen energy that connects us all.</p>
+                        <p><strong>My Background:</strong> I started painting at a young age and formally studied Fine
+                            Arts. Over the years, I have evolved from traditional portraits to finding my true voice in
+                            abstract and impressionist oil paintings.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. CONTACT PAGE SECTION -->
+    <section id="contact" class="py-16 bg-gray-900 text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-8">Get In Touch</h2>
+            <p class="text-gray-400 mb-10">Have a question about an artwork or want to commission a custom piece? Reach
+                out to me directly.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Email -->
+                <a href="mailto:maryamilyas071@gmail.com"
+                    class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fas fa-envelope text-3xl text-indigo-400 mb-4"></i>
+                    <h3 class="font-bold mb-2">Email</h3>
+                    <p class="text-gray-400 text-sm">maryamilyas071@gmail.com</p>
+                </a>
+                <!-- WhatsApp -->
+                <a href="https://wa.me/3270061043" target="_blank"
+                    class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fab fa-whatsapp text-3xl text-green-400 mb-4"></i>
+                    <h3 class="font-bold mb-2">WhatsApp</h3>
+                    <p class="text-gray-400 text-sm">+92 327 0061043</p>
+                </a>
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/maryaster70?utm_source=qr&igsh=eGk0dTR5MXN2MTJ4" target="_blank"
+                    class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fab fa-instagram text-3xl text-pink-500 mb-4"></i>
+                    <h3 class="font-bold mb-2">Instagram</h3>
+                    <p class="text-gray-400 text-sm">@MARYASTER70</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-gray-500 text-center py-6 text-sm">
+        <p>&copy; 2026 ArtWhole Portfolio. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Cart, Modal & Checkout Logic -->
+    <script>
+        const productModal = document.getElementById('productModal');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const checkoutModal = document.getElementById('checkoutModal');
+        const successModal = document.getElementById('successModal');
+
+        let cart = [];
+        let currentItem = null;
+        let cartTotalPrice = 0;
+
+        // Product Modal Logic
+        function openProductModal(title, medium, size, price, availability, shipping, imgSrc) {
+            currentItem = {
+                title: title,
+                priceString: price,
+                priceNum: parseFloat(price.replace(/[^0-9.-]+/g, "")),
+                imgSrc: imgSrc
+            };
+
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMedium').innerText = medium;
+            document.getElementById('modalSize').innerText = size;
+            document.getElementById('modalPrice').innerText = price;
+            document.getElementById('modalAvailability').innerText = availability;
+            document.getElementById('modalShipping').innerText = shipping;
+            document.getElementById('modalImg').src = imgSrc;
+
+            productModal.classList.remove('hidden');
+            document.body.classList.add('modal-active');
+        }
+
+        function closeProductModal() {
+            productModal.classList.add('hidden');
+            document.body.classList.remove('modal-active');
+        }
+
+        // Cart Logic
+        function addToCart() {
+            if (currentItem) {
+                cart.push(currentItem);
+                updateCartUI();
+                closeProductModal();
+                if (cartSidebar.classList.contains('cart-closed')) {
+                    toggleCart();
+                }
+            }
+        }
+
+        function submitOrder(event) {
+
+            event.preventDefault();
+
+            // FORM VALUES
+            const inputs = document.querySelectorAll('#checkoutForm input, #checkoutForm select');
+
+            const fullName = inputs[0].value;
+            const email = inputs[1].value;
+            const phone = inputs[2].value;
+            const address = inputs[3].value;
+            const city = inputs[4].value;
+            const zip = inputs[5].value;
+            const payment = inputs[6].value;
+
+            // CART ITEMS
+            let orderItems = "";
+
+            cart.forEach((item, index) => {
+
+                orderItems += `
+${index + 1}. ${item.title} - ${item.priceString}
+`;
+
+            });
+
+            // WHATSAPP MESSAGE
+            const whatsappMessage = `
+🛒 NEW ORDER
+
+Name: ${fullName}
+Email: ${email}
+Phone: ${phone}
+
+Address: ${address}
+City: ${city}
+Zip: ${zip}
+
+Payment Method: ${payment}
+
+Items:
+${orderItems}
+
+Total:
+$${cartTotalPrice.toFixed(2)}
+`;
+
+            // OPEN WHATSAPP
+            const whatsappURL =
+                `https://wa.me/923270061043?text=${encodeURIComponent(whatsappMessage)}`;
+
+            window.open(whatsappURL, "_blank");
+
+            // CLOSE CHECKOUT
+            checkoutModal.classList.add('hidden');
+
+            // EMPTY CART
+            cart = [];
+
+            updateCartUI();
+
+            // RESET FORM
+            document.getElementById('checkoutForm').reset();
+
+            // SHOW SUCCESS MODAL
+            successModal.classList.remove('hidden');
+        }
+
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').innerText = cart.length;
+
+            const container = document.getElementById('cartItemsContainer');
+            const emptyMsg = document.getElementById('emptyCartMsg');
+            cartTotalPrice = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = '';
+                container.appendChild(emptyMsg);
+                emptyMsg.style.display = 'block';
+            } else {
+                emptyMsg.style.display = 'none';
+                container.innerHTML = '';
+
+                cart.forEach((item, index) => {
+                    cartTotalPrice += item.priceNum;
+
+                    container.innerHTML += `
+                        <div class="flex items-center gap-4 bg-white p-3 rounded-lg border shadow-sm">
+                            <img src="${item.imgSrc}" alt="${item.title}" class="w-16 h-16 object-cover rounded">
+                            <div class="flex-1">
+                                <h4 class="font-bold text-sm text-gray-800">${item.title}</h4>
+                                <p class="text-indigo-600 font-semibold">${item.priceString}</p>
+                            </div>
+                            <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-600 p-2">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+
+            document.getElementById('cartTotal').innerText = `$${cartTotalPrice.toFixed(2)}`;
+            document.getElementById('checkoutTotal').innerText = `$${cartTotalPrice.toFixed(2)}`;
+        }
+
+        function toggleCart() {
+            if (cartSidebar.classList.contains('cart-closed')) {
+                cartSidebar.classList.remove('cart-closed');
+                cartSidebar.classList.add('cart-open');
+                cartOverlay.classList.remove('hidden');
+                document.body.classList.add('modal-active');
+            } else {
+                cartSidebar.classList.remove('cart-open');
+                cartSidebar.classList.add('cart-closed');
+                cartOverlay.classList.add('hidden');
+                document.body.classList.remove('modal-active');
+            }
+        }
+
+        // Checkout Logic
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                alert("Your cart is empty! Please add some art before checking out.");
+                return;
+            }
+            // Close Cart Sidebar
+            toggleCart();
+            // Open Checkout
+            checkoutModal.classList.remove('hidden');
+            document.body.classList.add('modal-active');
+        }
+
+        function closeCheckoutModal() {
+            checkoutModal.classList.add('hidden');
+            document.body.classList.remove('modal-active');
+        }
+
+
+
+        function closeSuccessModal() {
+            successModal.classList.add('hidden');
+            document.body.classList.remove('modal-active');
+            // Scroll back to top/shop
+            window.location.href = "#shop";
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function (event) {
+            if (event.target == productModal) closeProductModal();
+            if (event.target == checkoutModal) closeCheckoutModal();
+        }
+    </script>
+</body>
+
+</html>
